@@ -109,7 +109,7 @@ func main() {
 	//TODO: forming a good-looking response with good-looking numbers
 
 	weatherMessage := fmt.Sprintf(
-		"Сегодня в Петербурге %s \n%.2f °C, ощущается как %.2f °C\nВлажность %d %%, скорость ветра %d м/с, облачность %d %%",
+		"Сегодня в Петербурге %s \n%.2f °C, ощущается как %.2f °C\nВлажность %d%%, скорость ветра %d м/с, облачность %d%%",
 		fw.Weather[0].Description, kelvinToCelsius(fw.Main.Temp),
 		kelvinToCelsius(fw.Main.FeelsLike), fw.Main.Humidity, fw.Wind.Speed, fw.Clouds.All)
 
