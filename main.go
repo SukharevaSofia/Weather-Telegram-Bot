@@ -106,7 +106,6 @@ func main() {
 	var fw WeatherResponse
 	_ = json.Unmarshal(weatherBody, &fw)
 
-	//TODO: forming a good-looking response with good-looking numbers
 
 	weatherMessage := fmt.Sprintf(
 		"Сегодня в Петербурге %s \n%.2f °C, ощущается как %.2f °C\nВлажность %d%%, скорость ветра %d м/с, облачность %d%%",
