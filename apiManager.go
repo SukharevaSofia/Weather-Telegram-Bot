@@ -1,0 +1,69 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+)
+
+var weatherApiKey = os.Getenv("OPENWEATHER_API_KEY")
+
+type ApiRequestClass struct {
+	Coord struct {
+		Lon float64 `json:"lon"`
+		Lat float64 `json:"lat"`
+	} `json:"coord"`
+	Weather []struct {
+		Id          int    `json:"id"`
+		Main        string `json:"main"`
+		Description string `json:"description"`
+		Icon        string `json:"icon"`
+	} `json:"weather"`
+	Base string `json:"base"`
+	Main struct {
+		Temp      float64 `json:"temp"`
+		FeelsLike float64 `json:"feels_like"`
+		TempMin   float64 `json:"temp_min"`
+		TempMax   float64 `json:"temp_max"`
+		Pressure  int     `json:"pressure"`
+		Humidity  int     `json:"humidity"`
+	} `json:"main"`
+	Visibility int `json:"visibility"`
+	Wind       struct {
+		Speed int `json:"speed"`
+		Deg   int `json:"deg"`
+	} `json:"wind"`
+	Clouds struct {
+		All int `json:"all"`
+	} `json:"clouds"`
+	Dt  int `json:"dt"`
+	Sys struct {
+		Type    int    `json:"type"`
+		Id      int    `json:"id"`
+		Country string `json:"country"`
+		Sunrise int64  `json:"sunrise"`
+		Sunset  int64  `json:"sunset"`
+	} `json:"sys"`
+	Timezone int    `json:"timezone"`
+	Id       int    `json:"id"`
+	Name     string `json:"name"`
+	Cod      int    `json:"cod"`
+}
+
+func getWeatherFromApi() ApiRequestClass {
+	weatherRes, err := http.Get(
+		fmt.Sprintf(
+			"https://api.openweathermap.org/data/2.5/weather?id=%s&lang=ru&appid=%s",
+			saintPetersburgCityId,
+			weatherApiKey))
+	if err != nil {
+		fmt.Printf("OpenWeather request failed: %s\n", err)
+		os.Exit(1)
+	}
+	weatherBody, err := io.ReadAll(weatherRes.Body)
+	var fw ApiRequestClass
+	_ = json.Unmarshal(weatherBody, &fw)
+	return fw
+}
